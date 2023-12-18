@@ -126,11 +126,12 @@ function convertToRomanNumerals(num) {
   ];
 
   let romNum = '';
-  const dec = (num - (num % 10)) / 10;
+  const units = num % 10;
+  const dec = (num - units) / 10;
   for (let i = 0; i < dec; i += 1) {
     romNum += arrRoman[10];
   }
-  romNum += arrRoman[num % 10];
+  romNum += arrRoman[units];
 
   return romNum;
 }
