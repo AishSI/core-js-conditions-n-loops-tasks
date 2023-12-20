@@ -543,23 +543,19 @@ function getNearestBigger(number) {
 
   for (let i = numArr.length - 1; i > 0; i -= 1) {
     if (numArr[i - 1] < numArr[i]) {
-      const tempArr = [
-        ...numArr.slice(0, i),
-        ...numArr.slice(i).sort((a, b) => b - a),
-      ];
-
-      numArr.splice(i);
+      numArr.splice(
+        numArr.length,
+        0,
+        ...numArr.splice(i, numArr.length - i).sort((a, b) => b - a)
+      );
 
       for (let j = numArr.length - 1; j > i - 1; j -= 1) {
-        if (tempArr[i - 1] < tempArr[j]) {
-          [tempArr[i - 1], tempArr[j]] = [tempArr[j], tempArr[i - 1]];
+        if (numArr[i - 1] < numArr[j]) {
+          [numArr[i - 1], numArr[j]] = [numArr[j], numArr[i - 1]];
 
-          return Number(
-            [
-              ...tempArr.slice(0, i),
-              ...tempArr.slice(i).sort((a, b) => a - b),
-            ].join('')
-          );
+          const res = numArr.splice(i, numArr.length - i).sort((a, b) => a - b);
+
+          return Number([...numArr, ...res].join(''));
         }
       }
     }
