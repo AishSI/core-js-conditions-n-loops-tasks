@@ -487,23 +487,32 @@ function sortByAsc(arr) {
 function shuffleChar(str, iterations) {
   let strOdd = '';
   let strEven = '';
-  let curIteration = iterations;
+  const curIteration = iterations;
+  const answer = [];
+  answer[0] = str;
 
-  for (let i = 0; i < str.length; i += 1) {
-    if (i % 2) {
-      strOdd += str[i];
-    } else {
-      strEven += str[i];
+  if (curIteration < 1) {
+    return answer[0];
+  }
+
+  for (let iter = 1; iter <= iterations; iter += 1) {
+    for (let i = 0; i < str.length; i += 1) {
+      if (i % 2) {
+        strOdd += answer[iter - 1][i];
+      } else {
+        strEven += answer[iter - 1][i];
+      }
+    }
+
+    answer[iter] = strEven + strOdd;
+    strEven = '';
+    strOdd = '';
+
+    if (answer[iter] === str) {
+      return answer[iterations % iter];
     }
   }
-  curIteration -= 1;
-  const resStr = strEven + strOdd;
-
-  if (curIteration > 0) {
-    return shuffleChar(resStr, curIteration);
-  }
-
-  return resStr;
+  return answer[answer.length - 1];
 }
 
 /**
