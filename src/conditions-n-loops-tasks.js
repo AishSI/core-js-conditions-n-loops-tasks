@@ -487,11 +487,10 @@ function sortByAsc(arr) {
 function shuffleChar(str, iterations) {
   let strOdd = '';
   let strEven = '';
-  const curIteration = iterations;
   const answer = [];
   answer[0] = str;
 
-  if (curIteration < 1) {
+  if (iterations < 1) {
     return answer[0];
   }
 
@@ -532,8 +531,41 @@ function shuffleChar(str, iterations) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const numArr = [...`${number}`];
+
+  if (numArr.length < 2) {
+    return number;
+  }
+  if (numArr.length === 2) {
+    return Number(numArr.sort((a, b) => b - a).join(''));
+  }
+
+  for (let i = numArr.length - 1; i > 0; i -= 1) {
+    if (numArr[i - 1] < numArr[i]) {
+      const tempArr = [
+        ...numArr.slice(0, i),
+        ...numArr.slice(i).sort((a, b) => b - a),
+      ];
+
+      numArr.splice(i);
+
+      for (let j = numArr.length - 1; j > i - 1; j -= 1) {
+        if (tempArr[i - 1] < tempArr[j]) {
+          [tempArr[i - 1], tempArr[j]] = [tempArr[j], tempArr[i - 1]];
+
+          return Number(
+            [
+              ...tempArr.slice(0, i),
+              ...tempArr.slice(i).sort((a, b) => a - b),
+            ].join('')
+          );
+        }
+      }
+    }
+  }
+
+  return Number(numArr.join(''));
 }
 
 module.exports = {
